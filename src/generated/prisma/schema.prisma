@@ -1,0 +1,179 @@
+// Prisma schema for Tech Rental platform
+
+generator client {
+  provider = "node T:/node_modules/@prisma/client/generator-build/index.js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                    String         @id @default(cuid())
+  name                  String
+  email                 String         @unique
+  passwordHash          String
+  role                  String         @default("CUSTOMER") // CUSTOMER, STAFF, ADMIN
+  phone                 String?
+  address               String?
+  emergencyContactName  String?
+  emergencyContactPhone String?
+  kycStatus             String         @default("UNSUBMITTED") // UNSUBMITTED, PENDING, APPROVED, REJECTED
+  kycIdCardImage        String?
+  kycStudentIdImage     String?
+  kycRejectReason       String?
+  kycVerifiedAt         DateTime?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  orders                RentalOrder[]
+  notifications         Notification[]
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  icon        String?
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+}
+
+model Product {
+  id                  String        @id @default(cuid())
+  name                String
+  brand               String
+  categoryId          String
+  category            Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  model               String
+  description         String
+  specs               String // JSON: { cpu, ram, gpu, storage, display, ports, weight }
+  accessoriesIncluded String // JSON: string[] e.g. ["กระเป๋าใส่โน้ตบุ๊ก", "ที่ชาร์จ 140W", "สาย HDMI"]
+  dailyRate           Float
+  weeklyRate          Float
+  depositAmount       Float
+  imageUrl            String
+  galleryImages       String? // JSON: string[]
+  minRentalDays       Int           @default(1)
+  isActive            Boolean       @default(true)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  assets              AssetItem[]
+  orders              RentalOrder[]
+}
+
+model AssetItem {
+  id              String        @id @default(cuid())
+  productId       String
+  product         Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  serialNumber    String        @unique
+  status          String        @default("AVAILABLE") // AVAILABLE, RENTED, MAINTENANCE, DAMAGED, RETIRED
+  conditionNotes  String?
+  purchaseDate    DateTime?
+  lastInspectedAt DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  orders          RentalOrder[]
+}
+
+model RentalOrder {
+  id                String            @id @default(cuid())
+  orderNumber       String            @unique // e.g. TR-202609-0001
+  customerId        String
+  customer          User              @relation(fields: [customerId], references: [id])
+  productId         String
+  product           Product           @relation(fields: [productId], references: [id])
+  assignedAssetId   String?
+  assignedAsset     AssetItem?        @relation(fields: [assignedAssetId], references: [id])
+  startDate         DateTime
+  endDate           DateTime
+  totalDays         Int
+  dailyRate         Float
+  rentTotal         Float
+  depositAmount     Float
+  discountAmount    Float             @default(0)
+  grandTotal        Float
+  status            String            @default("PENDING") // PENDING, APPROVED, ACTIVE, RETURNED, COMPLETED, REJECTED, CANCELLED
+  paymentStatus     String            @default("PENDING") // PENDING, VERIFIED, REJECTED
+  paymentMethod     String            @default("PROMPTPAY") // PROMPTPAY, MOCK_GATEWAY
+  paymentSlipUrl    String?
+  paymentReference  String?
+  paidAt            DateTime?
+  paymentVerifiedAt DateTime?
+  paymentVerifiedBy String?
+  termsAccepted     Boolean           @default(true)
+  termsAcceptedAt   DateTime          @default(now())
+  deliveryAddress   String?
+  customerNotes     String?
+  adminNotes        String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  inspection        RentalInspection?
+}
+
+model RentalInspection {
+  id            String      @id @default(cuid())
+  rentalOrderId String      @unique
+  rentalOrder   RentalOrder @relation(fields: [rentalOrderId], references: [id], onDelete: Cascade)
+
+  // Check-out (ก่อนส่งมอบ)
+  checkoutDate      DateTime?
+  checkoutStaffName String?
+  checkoutNotes     String?
+  checkoutImages    String? // JSON: string[]
+
+  // Check-in (รับคืน)
+  checkinDate      DateTime?
+  checkinStaffName String?
+  checkinNotes     String?
+  checkinImages    String? // JSON: string[]
+
+  // Fines calculation
+  overdueDays       Int     @default(0)
+  lateFeePerDay     Float   @default(0)
+  totalLateFee      Float   @default(0)
+  damageFee         Float   @default(0)
+  damageDescription String?
+
+  // Deposit and refund
+  originalDeposit   Float     @default(0)
+  totalDeductions   Float     @default(0)
+  finalRefundAmount Float     @default(0)
+  refundStatus      String    @default("PENDING") // NOT_APPLICABLE, PENDING, REFUNDED
+  refundSlipUrl     String?
+  refundBankName    String?
+  refundBankAccount String?
+  refundPaidAt      DateTime?
+  refundProcessedBy String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  userName   String
+  userRole   String
+  action     String // APPROVE_KYC, REJECT_KYC, VERIFY_PAYMENT, ASSIGN_ASSET, CHECKOUT_DISPATCH, CHECKIN_INSPECT, PROCESS_REFUND, CREATE_PRODUCT, etc.
+  entityType String // ORDER, USER, PRODUCT, ASSET, INSPECTION
+  entityId   String
+  details    String // JSON or descriptive text
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   @default("INFO") // INFO, SUCCESS, WARNING, DANGER
+  link      String?
+  isRead    Boolean  @default(false)
+  channel   String   @default("IN_APP") // IN_APP, EMAIL_SIMULATED, LINE_SIMULATED
+  createdAt DateTime @default(now())
+}

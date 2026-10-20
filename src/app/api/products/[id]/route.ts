@@ -1,0 +1,130 @@
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth";
+import { logAuditAction } from "@/lib/audit";
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: params.id },
+      include: {
+        category: true,
+        assets: true,
+      },
+    });
+
+    if (!product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    let specsObj = {};
+    try {
+      specsObj = JSON.parse(product.specs);
+    } catch {
+      specsObj = {};
+    }
+
+    let accessoriesArr: string[] = [];
+    try {
+      accessoriesArr = JSON.parse(product.accessoriesIncluded);
+    } catch {
+      accessoriesArr = [];
+    }
+
+    const availableAssets = product.assets.filter((a) => a.status === "AVAILABLE");
+
+    return NextResponse.json({
+      product: {
+        ...product,
+        specsObj,
+        accessoriesArr,
+        totalAssetsCount: product.assets.length,
+        availableAssetsCount: availableAssets.length,
+      },
+    });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getCurrentUser();
+    if (!session || (session.role !== "ADMIN" && session.role !== "STAFF")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    const body = await req.json();
+    const updated = await prisma.product.update({
+      where: { id: params.id },
+      data: {
+        name: body.name,
+        brand: body.brand,
+        categoryId: body.categoryId,
+        model: body.model,
+        description: body.description,
+        specs: typeof body.specs === "string" ? body.specs : JSON.stringify(body.specs),
+        accessoriesIncluded:
+          typeof body.accessoriesIncluded === "string"
+            ? body.accessoriesIncluded
+            : JSON.stringify(body.accessoriesIncluded),
+        dailyRate: parseFloat(body.dailyRate),
+        weeklyRate: parseFloat(body.weeklyRate),
+        depositAmount: parseFloat(body.depositAmount),
+        imageUrl: body.imageUrl,
+        isActive: body.isActive !== undefined ? body.isActive : true,
+      },
+    });
+
+    await logAuditAction({
+      userId: session.id,
+      userName: session.name,
+      userRole: session.role,
+      action: "UPDATE_PRODUCT",
+      entityType: "PRODUCT",
+      entityId: params.id,
+      details: `แก้ไขข้อมูลสินค้า: ${updated.name}`,
+    });
+
+    return NextResponse.json({ success: true, product: updated });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getCurrentUser();
+    if (!session || session.role !== "ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    await prisma.product.update({
+      where: { id: params.id },
+      data: { isActive: false },
+    });
+
+    await logAuditAction({
+      userId: session.id,
+      userName: session.name,
+      userRole: session.role,
+      action: "DELETE_PRODUCT",
+      entityType: "PRODUCT",
+      entityId: params.id,
+      details: `ปิดการใช้งานสินค้า ID: ${params.id}`,
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
