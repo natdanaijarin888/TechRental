@@ -308,10 +308,10 @@ async function main() {
 
   console.log("Products seeded.");
 
-  // 4. Physical Asset Items with Serial Numbers
+  // 4. Physical Asset Items with Serial Numbers (All AVAILABLE for rent)
   const assetItems = [
     // MacBook Pro units
-    { productId: prodMacBook.id, serialNumber: "MBP-M3MAX-001", status: "RENTED", conditionNotes: "สภาพใหม่ 99% ไม่มีรอยขีดข่วน แบตเตอรี่รอบชาร์จ 12" },
+    { productId: prodMacBook.id, serialNumber: "MBP-M3MAX-001", status: "AVAILABLE", conditionNotes: "สภาพใหม่ 99% ไม่มีรอยขีดข่วน แบตเตอรี่รอบชาร์จ 12" },
     { productId: prodMacBook.id, serialNumber: "MBP-M3MAX-002", status: "AVAILABLE", conditionNotes: "สภาพสวย มีรอยขนแมวเล็กน้อยใต้ฐานเครื่อง" },
     { productId: prodMacBook.id, serialNumber: "MBP-M3MAX-003", status: "AVAILABLE", conditionNotes: "เครื่องใหม่แกะกล่อง เพิ่งเข้าคลัง" },
     
@@ -321,10 +321,10 @@ async function main() {
 
     // Sony A7 IV units
     { productId: prodSonyA7.id, serialNumber: "A7IV-GM2-001", status: "AVAILABLE", conditionNotes: "ชัตเตอร์ 3,500 ช็อต เลนส์ใสไม่มีฝุ่นรา" },
-    { productId: prodSonyA7.id, serialNumber: "A7IV-GM2-002", status: "MAINTENANCE", conditionNotes: "ส่งศูนย์ตรวจเช็คทำความสะอาดเซนเซอร์" },
+    { productId: prodSonyA7.id, serialNumber: "A7IV-GM2-002", status: "AVAILABLE", conditionNotes: "ส่งศูนย์ตรวจเช็คทำความสะอาดเซนเซอร์เรียบร้อย" },
 
     // RTX 4090 units
-    { productId: prodRTX4090.id, serialNumber: "RTX4090-ROG-001", status: "RENTED", conditionNotes: "อุณหภูมิปกติ ฟูลโหลดไม่เกิน 65C" },
+    { productId: prodRTX4090.id, serialNumber: "RTX4090-ROG-001", status: "AVAILABLE", conditionNotes: "อุณหภูมิปกติ ฟูลโหลดไม่เกิน 65C" },
     { productId: prodRTX4090.id, serialNumber: "RTX4090-ROG-002", status: "AVAILABLE", conditionNotes: "สภาพสวย พร้อมกล่องนิรภัย" },
 
     // LG OLED units
@@ -341,190 +341,33 @@ async function main() {
 
   console.log("Asset Items (Serial Numbers) seeded.");
 
-  // 5. Seed Orders covering various lifecycle stages
-  const today = new Date();
-  const d1 = new Date(today);
-  d1.setDate(d1.getDate() + 1);
-  const d3 = new Date(today);
-  d3.setDate(d3.getDate() + 3);
-
-  const pastStart = new Date(today);
-  pastStart.setDate(pastStart.getDate() - 5);
-  const pastEnd = new Date(today);
-  pastEnd.setDate(pastEnd.getDate() - 2);
-
-  // Active Order: Somchai renting RTX 4090
-  const rtxAsset = await prisma.assetItem.findUnique({ where: { serialNumber: "RTX4090-ROG-001" } });
-  const activeOrder = await prisma.rentalOrder.create({
-    data: {
-      orderNumber: "TR-202609-0001",
-      customerId: customerSomchai.id,
-      productId: prodRTX4090.id,
-      assignedAssetId: rtxAsset ? rtxAsset.id : null,
-      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2),
-      endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2),
-      totalDays: 5,
-      dailyRate: 1600,
-      rentTotal: 8000,
-      depositAmount: 25000,
-      grandTotal: 33000,
-      status: "ACTIVE",
-      paymentStatus: "VERIFIED",
-      paymentMethod: "PROMPTPAY",
-      paymentSlipUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80",
-      paymentReference: "PP20260910-449102",
-      paidAt: new Date(today.getTime() - 2 * 24 * 3600 * 1000),
-      paymentVerifiedAt: new Date(today.getTime() - 2 * 24 * 3600 * 1000),
-      paymentVerifiedBy: "สมโภชน์ ผู้ดูแลระบบ (Super Admin)",
-      deliveryAddress: customerSomchai.address,
-      customerNotes: "ต้องการนำไปใช้เรนเดอร์งานส่งลูกค้าด่วนครับ",
-    },
-  });
-
-  // Create checkout inspection for active order
-  await prisma.rentalInspection.create({
-    data: {
-      rentalOrderId: activeOrder.id,
-      checkoutDate: new Date(today.getTime() - 2 * 24 * 3600 * 1000),
-      checkoutStaffName: "อนันต์ ตรวจสอบ (Staff)",
-      checkoutNotes: "ตรวจสภาพการ์ดจอ ไฟสถานะ RGB และพัดลม 3 ตัวหมุนปกติ อุณหภูมิเบิร์นอิน 10 นาทีผ่านการทดสอบ ไร้รอยขีดข่วน",
-      checkoutImages: JSON.stringify([
-        "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=600&auto=format&fit=crop&q=80",
-      ]),
-      originalDeposit: 25000,
-      refundStatus: "PENDING",
-    },
-  });
-
-  // Pending Order: Kanya booked MacBook Pro, awaiting review
-  await prisma.rentalOrder.create({
-    data: {
-      orderNumber: "TR-202609-0002",
-      customerId: customerKanya.id,
-      productId: prodMacBook.id,
-      startDate: d1,
-      endDate: d3,
-      totalDays: 3,
-      dailyRate: 1500,
-      rentTotal: 4500,
-      depositAmount: 15000,
-      grandTotal: 19500,
-      status: "PENDING",
-      paymentStatus: "PENDING",
-      paymentMethod: "PROMPTPAY",
-      paymentSlipUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80",
-      paymentReference: "PP20260913-908123",
-      paidAt: new Date(),
-      deliveryAddress: customerKanya.address,
-      customerNotes: "เช่าไปใช้ทำโปรเจกต์จบและตัดต่อคลิปนำเสนอวิทยานิพนธ์ค่ะ",
-    },
-  });
-
-  // Returned order waiting for inspection
-  const a7Asset = await prisma.assetItem.findUnique({ where: { serialNumber: "A7IV-GM2-001" } });
-  const returnedOrder = await prisma.rentalOrder.create({
-    data: {
-      orderNumber: "TR-202609-0003",
-      customerId: customerSomchai.id,
-      productId: prodSonyA7.id,
-      assignedAssetId: a7Asset ? a7Asset.id : null,
-      startDate: pastStart,
-      endDate: pastEnd,
-      totalDays: 4,
-      dailyRate: 1800,
-      rentTotal: 7200,
-      depositAmount: 18000,
-      grandTotal: 25200,
-      status: "RETURNED",
-      paymentStatus: "VERIFIED",
-      paymentMethod: "PROMPTPAY",
-      paymentSlipUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80",
-      paymentReference: "PP20260905-110293",
-      paidAt: pastStart,
-      paymentVerifiedAt: pastStart,
-      paymentVerifiedBy: "สมโภชน์ ผู้ดูแลระบบ (Super Admin)",
-      deliveryAddress: customerSomchai.address,
-    },
-  });
-
-  await prisma.rentalInspection.create({
-    data: {
-      rentalOrderId: returnedOrder.id,
-      checkoutDate: pastStart,
-      checkoutStaffName: "อนันต์ ตรวจสอบ (Staff)",
-      checkoutNotes: "เครื่องและเลนส์สภาพสมบูรณ์ ชัตเตอร์ปกติ",
-      checkoutImages: JSON.stringify([
-        "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&auto=format&fit=crop&q=80",
-      ]),
-      originalDeposit: 18000,
-      refundStatus: "PENDING",
-    },
-  });
-
-  // 6. Seed Audit Logs
+  // 5. Initial System Audit Log
   await prisma.auditLog.create({
     data: {
       userId: adminUser.id,
       userName: adminUser.name,
       userRole: "ADMIN",
-      action: "VERIFY_PAYMENT",
-      entityType: "ORDER",
-      entityId: activeOrder.id,
-      details: "ตรวจสอบสลิปการโอนเงินจำนวน 33,000 บาท ถูกต้องครบถ้วน อนุมัติการชำระเงิน",
-      ipAddress: "192.168.1.10",
+      action: "SYSTEM_INITIALIZE",
+      entityType: "SYSTEM",
+      entityId: "system",
+      details: "เริ่มต้นระบบ Tech Rental พร้อมเปิดให้บริการ ไม่มีข้อมูลคำสั่งซื้อตกค้าง",
+      ipAddress: "127.0.0.1",
     },
   });
 
-  await prisma.auditLog.create({
-    data: {
-      userId: adminUser.id,
-      userName: adminUser.name,
-      userRole: "ADMIN",
-      action: "ASSIGN_ASSET",
-      entityType: "ORDER",
-      entityId: activeOrder.id,
-      details: "ผูก Serial Number: RTX4090-ROG-001 เข้ากับคำสั่งเช่า TR-202609-0001",
-      ipAddress: "192.168.1.10",
-    },
-  });
-
-  await prisma.auditLog.create({
-    data: {
-      userId: staffUser.id,
-      userName: staffUser.name,
-      userRole: "STAFF",
-      action: "CHECKOUT_DISPATCH",
-      entityType: "INSPECTION",
-      entityId: activeOrder.id,
-      details: "ส่งมอบอุปกรณ์เรียบร้อย พร้อมบันทึกภาพสภาพเครื่องก่อนส่ง",
-      ipAddress: "192.168.1.25",
-    },
-  });
-
-  // 7. Seed Notifications
+  // 6. Welcome Notification for Admin
   await prisma.notification.create({
     data: {
-      userId: customerSomchai.id,
-      title: "คำสั่งเช่า TR-202609-0001 ได้รับการส่งมอบแล้ว",
-      message: "อุปกรณ์ ASUS ROG Strix RTX 4090 (S/N: RTX4090-ROG-001) กำลังอยู่ในสถานะใช้งาน โปรดส่งคืนตามกำหนด",
+      userId: adminUser.id,
+      title: "ระบบพร้อมเปิดให้บริการ",
+      message: "ยินดีต้อนรับสู่ระบบ Tech Rental ข้อมูลคำสั่งซื้อถูกรีเซ็ตเรียบร้อย",
       type: "SUCCESS",
-      link: "/orders",
+      link: "/admin/dashboard",
       channel: "IN_APP",
     },
   });
 
-  await prisma.notification.create({
-    data: {
-      userId: customerSomchai.id,
-      title: "แจ้งเตือนครบกำหนดส่งคืนอุปกรณ์ล่วงหน้า 1 วัน",
-      message: "คำสั่งเช่า TR-202609-0001 จะครบกำหนดส่งคืนในวันพรุ่งนี้ กรุณาเตรียมอุปกรณ์และอุปกรณ์เสริมให้ครบชุด",
-      type: "WARNING",
-      link: "/orders",
-      channel: "LINE_SIMULATED",
-    },
-  });
-
-  console.log("TechRent seed completed successfully!");
+  console.log("TechRent seed completed successfully with 0 orders!");
 }
 
 main()
