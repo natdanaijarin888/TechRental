@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -20,7 +20,7 @@ import { calculateRentalPricing } from "@/lib/pricing-engine";
 import PromptPayModal from "@/components/PromptPayModal";
 import DigitalContractModal from "@/components/DigitalContractModal";
 
-export default function BookingPage() {
+function BookingContent() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -457,5 +457,13 @@ export default function BookingPage() {
         depositAmount={product.depositAmount}
       />
     </div>
+  );
+}
+
+export default function BookingPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen py-16 text-center text-gray-500">กำลังโหลดข้อมูลการจอง...</div>}>
+      <BookingContent />
+    </Suspense>
   );
 }

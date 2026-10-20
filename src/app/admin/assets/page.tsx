@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { getAssetStatusBadge } from "@/lib/utils";
 
-export default function AdminAssetsPage() {
+function AdminAssetsContent() {
   const searchParams = useSearchParams();
   const initialProductId = searchParams.get("productId") || "ALL";
 
@@ -412,5 +412,13 @@ export default function AdminAssetsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function AdminAssetsPage() {
+  return (
+    <Suspense fallback={<div className="p-12 text-center text-gray-400">กำลังโหลดข้อมูลอุปกรณ์...</div>}>
+      <AdminAssetsContent />
+    </Suspense>
   );
 }
