@@ -528,6 +528,7 @@ export default function OrdersPage() {
                 </div>
 
                 {/* Contextual Action Bar */}
+                {order.status === "ACTIVE" && (
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-4 border-t border-gray-100">
                     <div className="flex items-center gap-2 text-xs text-purple-700 bg-purple-50 px-3 py-1.5 rounded-xl border border-purple-200">
                       <Zap className="w-3.5 h-3.5" />
