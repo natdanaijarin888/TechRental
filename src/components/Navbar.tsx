@@ -128,6 +128,24 @@ export default function Navbar() {
 
           {/* Right actions */}
           <div className="hidden sm:flex items-center gap-3">
+            {/* LINE Official Contact */}
+            <a
+              href="https://lin.ee/5NAQU1y"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#06C755]/10 hover:bg-[#06C755]/20 text-[#06C755] text-xs font-bold transition"
+              title="ติดต่อเราผ่าน LINE"
+            >
+              <svg
+                className="w-3.5 h-3.5 fill-current shrink-0"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.019 9.607.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.026c-.052.316-.25 1.237 1.083.675 1.334-.563 7.202-4.241 9.827-7.26 1.488-1.688 2.146-3.468 2.146-5.725z" />
+              </svg>
+              <span>LINE ติดต่อเรา</span>
+            </a>
+
             {/* Notifications */}
             <NotificationBell />
 
@@ -235,6 +253,22 @@ export default function Navbar() {
             >
               คำสั่งเช่าของฉัน
             </Link>
+            <a
+              href="https://lin.ee/5NAQU1y"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-bold text-[#06C755] bg-[#06C755]/10 hover:bg-[#06C755]/20"
+            >
+              <svg
+                className="w-4 h-4 fill-current shrink-0"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.019 9.607.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.026c-.052.316-.25 1.237 1.083.675 1.334-.563 7.202-4.241 9.827-7.26 1.488-1.688 2.146-3.468 2.146-5.725z" />
+              </svg>
+              <span>ติดต่อเราผ่าน LINE</span>
+            </a>
             {currentUser && (
               <Link
                 href="/profile/kyc"

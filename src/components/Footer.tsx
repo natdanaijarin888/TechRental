@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 pt-12 pb-8 border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Col 1 */}
           <div className="space-y-4">
             <div className="flex items-center gap-2.5">
@@ -79,6 +79,45 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
+          </div>
+
+          {/* Col 4: LINE Support & QR Code */}
+          <div className="space-y-3">
+            <p className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#06C755]" />
+              ติดต่อเราผ่าน LINE
+            </p>
+            <div className="bg-gray-800/80 p-3.5 rounded-2xl border border-gray-700/60 space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-20 h-20 bg-white p-1 rounded-xl shrink-0 shadow-sm flex items-center justify-center">
+                  <img
+                    src="/images/line-qr.jpg"
+                    alt="LINE Official Account QR"
+                    className="w-full h-full object-contain rounded-lg"
+                  />
+                </div>
+                <div className="text-[11px] text-gray-400 space-y-1">
+                  <p className="font-bold text-white text-xs">แอดไลน์สอบถาม</p>
+                  <p className="leading-relaxed">สแกน QR Code เพื่อสอบถามคิวเช่า สเปก หรือแจ้งปัญหา</p>
+                </div>
+              </div>
+
+              <a
+                href="https://lin.ee/5NAQU1y"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2 px-3 rounded-xl bg-[#06C755] hover:bg-[#05b34c] text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-[#06C755]/20"
+              >
+                <svg
+                  className="w-4 h-4 fill-current shrink-0"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.019 9.607.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.026c-.052.316-.25 1.237 1.083.675 1.334-.563 7.202-4.241 9.827-7.26 1.488-1.688 2.146-3.468 2.146-5.725z" />
+                </svg>
+                <span>เปิด LINE (@TechRent)</span>
+              </a>
+            </div>
           </div>
         </div>
 
