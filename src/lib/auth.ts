@@ -14,6 +14,20 @@ export interface SessionUser {
   kycStatus: "UNSUBMITTED" | "PENDING" | "APPROVED" | "REJECTED";
 }
 
+export function getBaseUrl(req?: Request): string {
+  if (req) {
+    const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
+    if (host) {
+      const proto = req.headers.get("x-forwarded-proto") || (host.includes("localhost") ? "http" : "https");
+      return `${proto}://${host}`;
+    }
+  }
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    return process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
+  }
+  return "http://localhost:3000";
+}
+
 export function hashPassword(password: string): string {
   return bcrypt.hashSync(password, 10);
 }

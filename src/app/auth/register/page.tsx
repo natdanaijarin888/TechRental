@@ -159,28 +159,17 @@ export default function RegisterPage() {
             <ArrowRight className="w-4 h-4" />
           </button>
 
-          {/* Social Google Signup Mock */}
+          {/* Social Google Signup */}
           <button
             type="button"
-            onClick={async () => {
+            disabled={loading}
+            onClick={() => {
               setLoading(true);
-              try {
-                const res = await fetch("/api/auth/quick-switch", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ email: "somchai@example.com" }),
-                });
-                if (res.ok) {
-                  router.push("/profile/kyc");
-                  router.refresh();
-                }
-              } finally {
-                setLoading(false);
-              }
+              window.location.href = "/api/auth/google";
             }}
-            className="w-full py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 text-xs font-semibold text-gray-700 transition flex items-center justify-center gap-2"
+            className="w-full py-2.5 rounded-xl border border-gray-200 hover:bg-gray-50 text-xs font-semibold text-gray-700 transition flex items-center justify-center gap-2 disabled:opacity-50"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
                 d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"
