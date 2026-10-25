@@ -30,17 +30,17 @@ export default function AdminInspectionsPage() {
 
   // Form states for Check-out
   const [checkoutNotes, setCheckoutNotes] = useState("ตรวจสภาพรอบตัวเครื่องเรียบร้อย ทำงานปกติทุกฟังก์ชัน");
-  const [checkoutImage, setCheckoutImage] = useState("https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80");
+  const [checkoutImage, setCheckoutImage] = useState("");
 
   // Form states for Check-in
   const [checkinDate, setCheckinDate] = useState(new Date().toISOString().split("T")[0]);
   const [checkinNotes, setCheckinNotes] = useState("ตรวจรับคืนอุปกรณ์ครบชุด");
-  const [checkinImage, setCheckinImage] = useState("https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80");
+  const [checkinImage, setCheckinImage] = useState("");
   const [damageFee, setDamageFee] = useState("0");
   const [damageDescription, setDamageDescription] = useState("");
 
   // Form states for Refund
-  const [refundSlipImage, setRefundSlipImage] = useState("https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80");
+  const [refundSlipImage, setRefundSlipImage] = useState("");
   const [refundBank, setRefundBank] = useState("พร้อมเพย์ (PromptPay)");
   const [refundAccount, setRefundAccount] = useState("");
 
@@ -73,27 +73,32 @@ export default function AdminInspectionsPage() {
   );
   const checkinOrders = orders.filter((o) => o.status === "ACTIVE");
   const refundOrders = orders.filter(
-    (o) => o.status === "RETURNED" && o.inspection?.refundStatus === "PENDING"
+    (o) => o.status === "RETURNED" && o.inspection?.refundStatus !== "REFUNDED"
   );
 
   const openCheckoutModal = (order: any) => {
     setActiveOrder(order);
     setModalType("CHECKOUT");
+    setCheckoutImage("");
     setSuccessMsg("");
+    setErrorMsg("");
   };
 
   const openCheckinModal = (order: any) => {
     setActiveOrder(order);
     setModalType("CHECKIN");
+    setCheckinImage("");
     setCheckinDate(new Date().toISOString().split("T")[0]);
     setDamageFee("0");
     setDamageDescription("");
     setSuccessMsg("");
+    setErrorMsg("");
   };
 
   const openRefundModal = (order: any) => {
     setActiveOrder(order);
     setModalType("REFUND");
+    setRefundSlipImage("");
     setRefundAccount(order.customer.phone || "-");
     setSuccessMsg("");
     setErrorMsg("");
