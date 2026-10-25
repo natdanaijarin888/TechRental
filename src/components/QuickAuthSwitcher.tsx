@@ -16,6 +16,24 @@ export interface DemoUserOption {
 
 const DEMO_USERS: DemoUserOption[] = [
   {
+    id: "user-cust-3",
+    email: "user1@techrent.co",
+    name: "ณัฐดนัย (User 1 - ลูกค้า KYC ผ่านแล้ว)",
+    role: "CUSTOMER",
+    kycStatus: "APPROVED",
+    badge: "User 1",
+    description: "ลูกค้าพร้อมเช่าสินค้าได้ทันที ผ่านการอนุมัติ KYC เรียบร้อย",
+  },
+  {
+    id: "user-cust-4",
+    email: "user2@techrent.co",
+    name: "ธนากร (User 2 - ลูกค้า KYC ผ่านแล้ว)",
+    role: "CUSTOMER",
+    kycStatus: "APPROVED",
+    badge: "User 2",
+    description: "ลูกค้าพร้อมเช่าสินค้าได้ทันที ผ่านการอนุมัติ KYC เรียบร้อย",
+  },
+  {
     id: "user-cust-1",
     email: "somchai@example.com",
     name: "สมชาย มีทรัพย์ (ลูกค้า - ยืนยัน KYC แล้ว)",

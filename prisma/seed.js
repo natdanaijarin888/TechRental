@@ -81,6 +81,40 @@ async function main() {
     },
   });
 
+  const customerUser1 = await prisma.user.create({
+    data: {
+      id: "user-cust-3",
+      name: "ณัฐดนัย เจริญสุข (User 1)",
+      email: "user1@techrent.co",
+      passwordHash,
+      role: "CUSTOMER",
+      phone: "081-888-9999",
+      address: "99/8 อาคารสุขุมวิทการ์เดน ถ.สุขุมวิท เขตวัฒนา กรุงเทพฯ 10110",
+      emergencyContactName: "สมศรี เจริญสุข",
+      emergencyContactPhone: "081-999-0000",
+      kycStatus: "APPROVED",
+      kycIdCardImage: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80",
+      kycVerifiedAt: new Date(),
+    },
+  });
+
+  const customerUser2 = await prisma.user.create({
+    data: {
+      id: "user-cust-4",
+      name: "ธนากร รุ่งเรือง (User 2)",
+      email: "user2@techrent.co",
+      passwordHash,
+      role: "CUSTOMER",
+      phone: "086-555-7777",
+      address: "120/5 ถ.สาทรใต้ แขวงทุ่งมหาเมฆ เขตสาทร กรุงเทพฯ 10120",
+      emergencyContactName: "วันดี รุ่งเรือง",
+      emergencyContactPhone: "086-777-8888",
+      kycStatus: "APPROVED",
+      kycIdCardImage: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80",
+      kycVerifiedAt: new Date(),
+    },
+  });
+
   console.log("Users seeded.");
 
   // 2. Categories
