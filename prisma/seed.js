@@ -4,7 +4,16 @@ const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Seeding TechRent database with 52 professional IT products...");
+  console.log("Checking database before seed...");
+
+  // Smart Seed: If products already exist in database, do not wipe!
+  const existingProductCount = await prisma.product.count().catch(() => 0);
+  if (existingProductCount > 0) {
+    console.log(`Database already contains ${existingProductCount} products. Skipping seed wipe to preserve user-added products and data.`);
+    return;
+  }
+
+  console.log("Empty database detected. Seeding initial 52 products and 104 assets...");
 
   // Clean existing tables in proper relation order
   await prisma.notification.deleteMany();

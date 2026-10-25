@@ -1,13 +1,14 @@
 // Prisma schema for Tech Rental platform
 
 generator client {
-  provider = "node T:/node_modules/@prisma/client/generator-build/index.js"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
