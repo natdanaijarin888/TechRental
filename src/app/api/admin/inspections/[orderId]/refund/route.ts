@@ -10,8 +10,8 @@ export async function POST(
 ) {
   try {
     const session = await getCurrentUser();
-    if (!session || session.role !== "ADMIN") {
-      return NextResponse.json({ error: "Only admins can process refunds" }, { status: 403 });
+    if (!session || (session.role !== "ADMIN" && session.role !== "STAFF")) {
+      return NextResponse.json({ error: "Only admins and staff can process refunds" }, { status: 403 });
     }
 
     const { refundSlipUrl, refundBankName, refundBankAccount } = await req.json();
@@ -25,23 +25,36 @@ export async function POST(
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    if (!order.inspection) {
-      return NextResponse.json(
-        { error: "ต้องทำการตรวจรับคืนเครื่อง (Check-in) ก่อนทำการคืนเงินมัดจำ" },
-        { status: 400 }
-      );
-    }
+    const calculatedRefund = order.inspection?.finalRefundAmount && order.inspection.finalRefundAmount > 0
+      ? order.inspection.finalRefundAmount
+      : Math.max(0, order.depositAmount - (order.inspection?.totalDeductions || 0));
 
     // Update inspection record
-    const updatedInspection = await prisma.rentalInspection.update({
+    const updatedInspection = await prisma.rentalInspection.upsert({
       where: { rentalOrderId: order.id },
-      data: {
+      update: {
         refundStatus: "REFUNDED",
         refundSlipUrl: refundSlipUrl || null,
         refundBankName: refundBankName || "พร้อมเพย์ (PromptPay)",
         refundBankAccount: refundBankAccount || order.customer.phone || "-",
         refundPaidAt: new Date(),
         refundProcessedBy: `${session.name} (${session.role})`,
+        finalRefundAmount: calculatedRefund,
+        checkinDate: order.inspection?.checkinDate || new Date(),
+        checkinStaffName: order.inspection?.checkinStaffName || `${session.name} (${session.role})`,
+      },
+      create: {
+        rentalOrderId: order.id,
+        originalDeposit: order.depositAmount,
+        finalRefundAmount: calculatedRefund,
+        refundStatus: "REFUNDED",
+        refundSlipUrl: refundSlipUrl || null,
+        refundBankName: refundBankName || "พร้อมเพย์ (PromptPay)",
+        refundBankAccount: refundBankAccount || order.customer.phone || "-",
+        refundPaidAt: new Date(),
+        refundProcessedBy: `${session.name} (${session.role})`,
+        checkinDate: new Date(),
+        checkinStaffName: `${session.name} (${session.role})`,
       },
     });
 
@@ -68,13 +81,13 @@ export async function POST(
       action: "PROCESS_REFUND",
       entityType: "ORDER",
       entityId: order.id,
-      details: `โอนคืนเงินมัดจำจำนวน ฿${order.inspection.finalRefundAmount} เข้าบัญชี ${refundBankName || "PromptPay"} ${refundBankAccount || ""} สำหรับคำสั่งเช่า ${order.orderNumber}`,
+      details: `โอนคืนเงินมัดจำจำนวน ฿${updatedInspection.finalRefundAmount} เข้าบัญชี ${refundBankName || "PromptPay"} ${refundBankAccount || ""} สำหรับคำสั่งเช่า ${order.orderNumber}`,
     });
 
     await sendNotification({
       userId: order.customerId,
       title: `โอนคืนเงินมัดจำคำสั่งเช่า ${order.orderNumber} เรียบร้อยแล้ว`,
-      message: `โอนคืนเงินมัดจำสุทธิจำนวน ฿${order.inspection.finalRefundAmount} เข้าบัญชีของคุณแล้ว สามารถตรวจสอบหลักฐานการโอนได้ที่หน้ารายละเอียดคำสั่งเช่า`,
+      message: `โอนคืนเงินมัดจำสุทธิจำนวน ฿${updatedInspection.finalRefundAmount} เข้าบัญชีของคุณแล้ว สามารถตรวจสอบหลักฐานการโอนได้ที่หน้ารายละเอียดคำสั่งเช่า`,
       type: "SUCCESS",
       link: `/orders/${order.id}/receipt`,
       channel: "EMAIL_SIMULATED",

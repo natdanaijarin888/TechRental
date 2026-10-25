@@ -46,6 +46,7 @@ export default function AdminInspectionsPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -95,6 +96,7 @@ export default function AdminInspectionsPage() {
     setModalType("REFUND");
     setRefundAccount(order.customer.phone || "-");
     setSuccessMsg("");
+    setErrorMsg("");
   };
 
   // Submit Checkout
@@ -102,6 +104,7 @@ export default function AdminInspectionsPage() {
     e.preventDefault();
     if (!activeOrder) return;
     setIsSubmitting(true);
+    setErrorMsg("");
     try {
       const res = await fetch(`/api/admin/inspections/${activeOrder.id}/checkout`, {
         method: "POST",
@@ -111,13 +114,16 @@ export default function AdminInspectionsPage() {
           checkoutImages: [checkoutImage],
         }),
       });
+      const data = await res.json();
       if (res.ok) {
         setSuccessMsg("บันทึก Check-out ส่งมอบเครื่องสำเร็จ! คำสั่งเช่าเข้าสู่สถานะ กำลังใช้งาน (In-Use)");
         fetchOrders();
         setTimeout(() => setModalType(null), 1200);
+      } else {
+        setErrorMsg(data.error || "เกิดข้อผิดพลาดในการบันทึกส่งมอบ");
       }
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      setErrorMsg(e.message || "เกิดข้อผิดพลาดในการเชื่อมต่อ");
     } finally {
       setIsSubmitting(false);
     }
@@ -128,6 +134,7 @@ export default function AdminInspectionsPage() {
     e.preventDefault();
     if (!activeOrder) return;
     setIsSubmitting(true);
+    setErrorMsg("");
     try {
       const res = await fetch(`/api/admin/inspections/${activeOrder.id}/checkin`, {
         method: "POST",
@@ -140,13 +147,16 @@ export default function AdminInspectionsPage() {
           damageDescription,
         }),
       });
+      const data = await res.json();
       if (res.ok) {
         setSuccessMsg("บันทึก Check-in รับคืนเครื่องและคำนวณค่าปรับสำเร็จ!");
         fetchOrders();
         setTimeout(() => setModalType(null), 1200);
+      } else {
+        setErrorMsg(data.error || "เกิดข้อผิดพลาดในการตรวจรับคืน");
       }
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      setErrorMsg(e.message || "เกิดข้อผิดพลาดในการเชื่อมต่อ");
     } finally {
       setIsSubmitting(false);
     }
@@ -157,6 +167,7 @@ export default function AdminInspectionsPage() {
     e.preventDefault();
     if (!activeOrder) return;
     setIsSubmitting(true);
+    setErrorMsg("");
     try {
       const res = await fetch(`/api/admin/inspections/${activeOrder.id}/refund`, {
         method: "POST",
@@ -167,13 +178,16 @@ export default function AdminInspectionsPage() {
           refundBankAccount: refundAccount,
         }),
       });
+      const data = await res.json();
       if (res.ok) {
         setSuccessMsg("โอนคืนเงินมัดจำและปิดงานคำสั่งเช่าเรียบร้อย (Completed)! เครื่องถูกปลดกลับสู่สถานะ ว่างพร้อมเช่า");
         fetchOrders();
         setTimeout(() => setModalType(null), 1500);
+      } else {
+        setErrorMsg(data.error || "เกิดข้อผิดพลาดในการโอนคืนเงินมัดจำ");
       }
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      setErrorMsg(e.message || "เกิดข้อผิดพลาดในการเชื่อมต่อ");
     } finally {
       setIsSubmitting(false);
     }
@@ -575,12 +589,18 @@ export default function AdminInspectionsPage() {
                 </div>
               )}
 
+              {errorMsg && (
+                <div className="p-3 bg-red-50 text-red-800 rounded-xl font-bold">
+                  {errorMsg}
+                </div>
+              )}
+
               <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 text-emerald-950 space-y-1">
                 <span className="text-[10px] uppercase font-bold text-emerald-700">
                   ยอดเงินมัดจำคืนสุทธิ
                 </span>
                 <div className="text-2xl font-black text-emerald-700">
-                  {formatTHB(activeOrder.inspection?.finalRefundAmount || 0)}
+                  {formatTHB(activeOrder.inspection?.finalRefundAmount > 0 ? activeOrder.inspection.finalRefundAmount : activeOrder.depositAmount)}
                 </div>
                 <p className="text-[11px] text-emerald-800">
                   ลูกค้า: {activeOrder.customer.name}
