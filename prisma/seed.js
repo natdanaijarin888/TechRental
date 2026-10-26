@@ -124,6 +124,36 @@ async function main() {
     },
   });
 
+  const staffRoleUser = await prisma.user.create({
+    data: {
+      id: "user-role-staff",
+      name: "เจ้าหน้าที่ ตรวจสอบและคลัง (STAFF)",
+      email: "staff@techrent.co",
+      passwordHash,
+      role: "STAFF",
+      phone: "081-444-5555",
+      address: "123 ศูนย์บริการเช่าสาขาสยาม กรุงเทพฯ",
+      kycStatus: "APPROVED",
+      kycVerifiedAt: new Date(),
+    },
+  });
+
+  const customerRoleUser = await prisma.user.create({
+    data: {
+      id: "user-role-customer",
+      name: "ลูกค้า ผู้ใช้งานระบบ (CUSTOMER)",
+      email: "customer@techrent.co",
+      passwordHash,
+      role: "CUSTOMER",
+      phone: "082-888-9999",
+      address: "45/12 คอนโดพญาไท ถ.พญาไท เขตราชเทวี กรุงเทพฯ 10400",
+      emergencyContactName: "วิภา มีทรัพย์ (มารดา)",
+      emergencyContactPhone: "081-333-7777",
+      kycStatus: "APPROVED",
+      kycVerifiedAt: new Date(),
+    },
+  });
+
   console.log("Users seeded.");
 
   // 2. Categories
