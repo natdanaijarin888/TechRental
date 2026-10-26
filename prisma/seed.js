@@ -233,7 +233,7 @@ async function main() {
       dailyRate: 1300,
       weeklyRate: 7500,
       depositAmount: 12000,
-      imageUrl: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-mbp-m3pro-14",
@@ -259,7 +259,7 @@ async function main() {
       dailyRate: 1100,
       weeklyRate: 6200,
       depositAmount: 10000,
-      imageUrl: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-rog-zephyrus-g16",
@@ -309,7 +309,7 @@ async function main() {
       dailyRate: 1250,
       weeklyRate: 7000,
       depositAmount: 12000,
-      imageUrl: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-razer-blade-16",
@@ -359,7 +359,7 @@ async function main() {
       dailyRate: 850,
       weeklyRate: 4800,
       depositAmount: 8000,
-      imageUrl: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=800&auto=format&fit=crop&q=80",
     },
 
     // --- หมวด 2: กล้องและอุปกรณ์ถ่ายภาพ (Cameras & Lenses) ---
@@ -435,7 +435,7 @@ async function main() {
       dailyRate: 2400,
       weeklyRate: 13500,
       depositAmount: 25000,
-      imageUrl: "https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1510127034890-ba27508e9f1c?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-sony-a7rv",
@@ -459,7 +459,7 @@ async function main() {
       dailyRate: 2000,
       weeklyRate: 11000,
       depositAmount: 20000,
-      imageUrl: "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1617005082133-548c4dd27f35?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-fujifilm-xt5",
@@ -483,7 +483,7 @@ async function main() {
       dailyRate: 1200,
       weeklyRate: 6500,
       depositAmount: 10000,
-      imageUrl: "https://images.unsplash.com/photo-1500634245200-e5245c7574ef?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-dji-ronin-4d",
@@ -508,7 +508,7 @@ async function main() {
       dailyRate: 3500,
       weeklyRate: 19500,
       depositAmount: 35000,
-      imageUrl: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1574717025058-2f8737d2e2b7?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-bmpcc-6k-pro",
@@ -532,7 +532,7 @@ async function main() {
       dailyRate: 1500,
       weeklyRate: 8200,
       depositAmount: 15000,
-      imageUrl: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1585506942812-e72b29cef752?w=800&auto=format&fit=crop&q=80",
     },
 
     // --- หมวด 3: การ์ดจอ GPU & Workstation (GPUs) ---
@@ -606,7 +606,7 @@ async function main() {
       dailyRate: 1100,
       weeklyRate: 6000,
       depositAmount: 15000,
-      imageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-rtx-4070ti-super",
@@ -628,7 +628,7 @@ async function main() {
       dailyRate: 850,
       weeklyRate: 4600,
       depositAmount: 12000,
-      imageUrl: "https://images.unsplash.com/photo-1544652478-6653e09f18a2?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1587145820266-a5951ee6f620?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-nvidia-a100",
@@ -672,7 +672,7 @@ async function main() {
       dailyRate: 2500,
       weeklyRate: 14000,
       depositAmount: 30000,
-      imageUrl: "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1624705002806-5d72df19c3ad?w=800&auto=format&fit=crop&q=80",
     },
 
     // --- หมวด 4: จอคอมพิวเตอร์และมอนิเตอร์ (Monitors) ---
@@ -796,7 +796,7 @@ async function main() {
       dailyRate: 1400,
       weeklyRate: 7900,
       depositAmount: 16000,
-      imageUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1616711417724-a9951d87e6a1?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-benq-sw321c",
@@ -869,7 +869,7 @@ async function main() {
       dailyRate: 750,
       weeklyRate: 4100,
       depositAmount: 8000,
-      imageUrl: "https://images.unsplash.com/photo-1561154464-82e9adf32764?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-wacom-cintiq-27",
@@ -917,7 +917,7 @@ async function main() {
       dailyRate: 800,
       weeklyRate: 4400,
       depositAmount: 9000,
-      imageUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-ipad-air-m2-13",
@@ -940,7 +940,7 @@ async function main() {
       dailyRate: 650,
       weeklyRate: 3600,
       depositAmount: 7000,
-      imageUrl: "https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-samsung-tab-s9ultra",
@@ -963,7 +963,7 @@ async function main() {
       dailyRate: 850,
       weeklyRate: 4700,
       depositAmount: 9500,
-      imageUrl: "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1632634690584-fc1c9fd34ba3?w=800&auto=format&fit=crop&q=80",
     },
 
     // --- สินค้าเพิ่มเติม 20 รายการใหม่ ---
@@ -991,7 +991,7 @@ async function main() {
       dailyRate: 1800,
       weeklyRate: 10500,
       depositAmount: 20000,
-      imageUrl: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1593642634367-d91a135587b5?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-mbp-m3pro-16",
@@ -1016,7 +1016,7 @@ async function main() {
       dailyRate: 1250,
       weeklyRate: 7000,
       depositAmount: 12000,
-      imageUrl: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-asus-zenbook-duo",
@@ -1042,7 +1042,7 @@ async function main() {
       dailyRate: 1150,
       weeklyRate: 6500,
       depositAmount: 11000,
-      imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-msi-titan-18",
@@ -1068,7 +1068,7 @@ async function main() {
       dailyRate: 2100,
       weeklyRate: 12000,
       depositAmount: 25000,
-      imageUrl: "https://images.unsplash.com/photo-1593642634367-d91a135587b5?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&auto=format&fit=crop&q=80",
     },
 
     // เพิ่มเติมหมวด 2: กล้องและอุปกรณ์ถ่ายภาพ (Cameras & Lenses)
@@ -1095,7 +1095,7 @@ async function main() {
       dailyRate: 2300,
       weeklyRate: 13000,
       depositAmount: 24000,
-      imageUrl: "https://images.unsplash.com/photo-1516724562728-afc824a36e84?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-sony-a7siii",
@@ -1120,7 +1120,7 @@ async function main() {
       dailyRate: 1700,
       weeklyRate: 9500,
       depositAmount: 18000,
-      imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1606986628253-49d5c2bc8040?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-nikon-z8",
@@ -1144,7 +1144,7 @@ async function main() {
       dailyRate: 2200,
       weeklyRate: 12500,
       depositAmount: 22000,
-      imageUrl: "https://images.unsplash.com/photo-1520390138845-fd2d229dd553?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1495707902641-75cac588d2e9?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-lumix-gh7",
@@ -1168,7 +1168,7 @@ async function main() {
       dailyRate: 1350,
       weeklyRate: 7500,
       depositAmount: 12000,
-      imageUrl: "https://images.unsplash.com/photo-1495745966610-2a67f2297e5e?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1452780212940-6f5c0d14d848?w=800&auto=format&fit=crop&q=80",
     },
 
     // เพิ่มเติมหมวด 3: การ์ดจอ GPU & Workstation (GPUs)
@@ -1193,7 +1193,7 @@ async function main() {
       dailyRate: 700,
       weeklyRate: 3800,
       depositAmount: 9000,
-      imageUrl: "https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1562976540-1502c2145186?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-nvidia-l40s",
@@ -1239,7 +1239,7 @@ async function main() {
       dailyRate: 1200,
       weeklyRate: 6800,
       depositAmount: 15000,
-      imageUrl: "https://images.unsplash.com/photo-1562976540-1502c2145186?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-rtx-4060ti-16gb",
@@ -1262,7 +1262,7 @@ async function main() {
       dailyRate: 600,
       weeklyRate: 3200,
       depositAmount: 7500,
-      imageUrl: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1544652478-6653e09f18a2?w=800&auto=format&fit=crop&q=80",
     },
 
     // เพิ่มเติมหมวด 4: จอคอมพิวเตอร์และมอนิเตอร์ (Monitors)
@@ -1333,7 +1333,7 @@ async function main() {
       dailyRate: 1100,
       weeklyRate: 6200,
       depositAmount: 13000,
-      imageUrl: "https://images.unsplash.com/photo-1593642634443-44adaa06623a?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1616711417724-a9951d87e6a1?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-eizo-coloredge",
@@ -1356,7 +1356,7 @@ async function main() {
       dailyRate: 1600,
       weeklyRate: 9200,
       depositAmount: 22000,
-      imageUrl: "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&auto=format&fit=crop&q=80",
     },
 
     // เพิ่มเติมหมวด 5: แท็บเล็ตและอุปกรณ์เสริม (Tablets & Accessories)
@@ -1382,7 +1382,7 @@ async function main() {
       dailyRate: 950,
       weeklyRate: 5200,
       depositAmount: 12000,
-      imageUrl: "https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-apple-vision-pro",
@@ -1406,7 +1406,7 @@ async function main() {
       dailyRate: 3000,
       weeklyRate: 17000,
       depositAmount: 40000,
-      imageUrl: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1617802690992-15d93263d3a9?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-ipad-mini-7",
@@ -1430,7 +1430,7 @@ async function main() {
       dailyRate: 550,
       weeklyRate: 3000,
       depositAmount: 6000,
-      imageUrl: "https://images.unsplash.com/photo-1542751110-97427bbecf20?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1561154464-82e9adf32764?w=800&auto=format&fit=crop&q=80",
     },
     {
       id: "prod-lenovo-yoga-book9i",
@@ -1455,7 +1455,7 @@ async function main() {
       dailyRate: 1150,
       weeklyRate: 6400,
       depositAmount: 11000,
-      imageUrl: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&auto=format&fit=crop&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800&auto=format&fit=crop&q=80",
     },
   ];
 

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import ImageUploadWithCamera from "@/components/ImageUploadWithCamera";
 import {
   Laptop,
   Plus,
@@ -383,12 +384,12 @@ export default function AdminProductsPage() {
                 </div>
 
                 <div className="col-span-2">
-                  <label className="block font-semibold text-gray-700 mb-1">URL รูปภาพสินค้า</label>
-                  <input
-                    type="text"
+                  <ImageUploadWithCamera
+                    label="รูปภาพสินค้า (อัปโหลดไฟล์ หรือถ่ายภาพจากกล้อง)"
                     value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-gray-300"
+                    onChange={(url) => setImageUrl(url)}
+                    placeholder="คลิกเพื่อเลือกไฟล์ หรือถ่ายภาพสด"
+                    aspectRatio="video"
                   />
                 </div>
 
