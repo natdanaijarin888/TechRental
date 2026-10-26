@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Camera, Upload, CheckCircle2, X, RefreshCw, Sparkles } from "lucide-react";
+import { Camera, Upload, CheckCircle2, X, RefreshCw, Sparkles, Link2 } from "lucide-react";
 
 interface ImageUploadWithCameraProps {
   label: string;
@@ -180,6 +180,44 @@ export default function ImageUploadWithCamera({
               <p className="text-[10px] text-gray-400">รองรับไฟล์ JPG, PNG หรือคลิกเปิดกล้องด้านบน</p>
             </div>
           )}
+        </div>
+      )}
+
+      {/* URL Input Option */}
+      {!isCameraActive && (
+        <div className="pt-1 space-y-1">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold text-gray-600 flex items-center gap-1.5">
+              <Link2 className="w-3.5 h-3.5 text-blue-600" /> หรือวางลิงก์รูปภาพโดยตรง (Image URL)
+            </span>
+            {value && (
+              <span className="text-[10px] text-gray-400">
+                พิมพ์หรือวางลิงก์เพื่อเปลี่ยนภาพได้ทันที
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={value || ""}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="วางลิงก์ภาพ เช่น https://example.com/photo.jpg หรือ /images/products/..."
+                className="w-full px-3 py-2 text-xs rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white font-mono text-gray-800 placeholder:font-sans placeholder:text-gray-400 shadow-sm"
+              />
+            </div>
+            {value && (
+              <button
+                type="button"
+                onClick={() => onChange("")}
+                className="px-3 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition flex items-center gap-1 shrink-0"
+                title="ลบรูปและล้างลิงก์"
+              >
+                <X className="w-3.5 h-3.5" />
+                ล้าง
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>

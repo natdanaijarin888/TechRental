@@ -77,7 +77,7 @@ export default function AdminProductsPage() {
     setDailyRate("1200");
     setWeeklyRate("7000");
     setDepositAmount("15000");
-    setImageUrl("https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80");
+    setImageUrl("");
     setSpecsText('{\n  "cpu": "Intel Core i9 / Apple M-series",\n  "ram": "32GB",\n  "storage": "1TB SSD"\n}');
     setAccessoriesText("สายชาร์จแท้, กระเป๋ากันกระแทก, อะแดปเตอร์");
     setInitialSerialNumbers("ITEM-001, ITEM-002");
@@ -385,7 +385,7 @@ export default function AdminProductsPage() {
 
                 <div className="col-span-2">
                   <ImageUploadWithCamera
-                    label="รูปภาพสินค้า (อัปโหลดไฟล์ หรือถ่ายภาพจากกล้อง)"
+                    label="รูปภาพสินค้า (อัปโหลดไฟล์, ถ่ายจากกล้อง หรือใส่ลิงก์ URL)"
                     value={imageUrl}
                     onChange={(url) => setImageUrl(url)}
                     placeholder="คลิกเพื่อเลือกไฟล์ หรือถ่ายภาพสด"
