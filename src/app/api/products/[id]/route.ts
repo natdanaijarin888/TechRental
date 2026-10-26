@@ -104,14 +104,45 @@ export async function DELETE(
 ) {
   try {
     const session = await getCurrentUser();
-    if (!session || session.role !== "ADMIN") {
+    if (!session || (session.role !== "ADMIN" && session.role !== "STAFF")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
-    await prisma.product.update({
-      where: { id: params.id },
-      data: { isActive: false },
+    // Check if product has active rental orders
+    const activeOrders = await prisma.rentalOrder.count({
+      where: {
+        productId: params.id,
+        status: { in: ["PENDING_PAYMENT", "PAID", "APPROVED", "DELIVERED", "ACTIVE"] },
+      },
     });
+
+    if (activeOrders > 0) {
+      return NextResponse.json(
+        { error: "ไม่สามารถลบสินค้านี้ได้ เนื่องจากมีคำสั่งเช่าที่กำลังดำเนินการอยู่" },
+        { status: 400 }
+      );
+    }
+
+    // Check if there are any historical orders
+    const totalOrders = await prisma.rentalOrder.count({
+      where: { productId: params.id },
+    });
+
+    if (totalOrders > 0) {
+      // If there are historical orders, soft delete to preserve order history
+      await prisma.product.update({
+        where: { id: params.id },
+        data: { isActive: false },
+      });
+    } else {
+      // If no orders, delete physical assets and then product
+      await prisma.assetItem.deleteMany({
+        where: { productId: params.id },
+      });
+      await prisma.product.delete({
+        where: { id: params.id },
+      });
+    }
 
     await logAuditAction({
       userId: session.id,
@@ -120,7 +151,7 @@ export async function DELETE(
       action: "DELETE_PRODUCT",
       entityType: "PRODUCT",
       entityId: params.id,
-      details: `ปิดการใช้งานสินค้า ID: ${params.id}`,
+      details: `ลบ/ปิดการใช้งานสินค้า ID: ${params.id}`,
     });
 
     return NextResponse.json({ success: true });

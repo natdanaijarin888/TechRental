@@ -166,14 +166,18 @@ export default function AdminProductsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("คุณแน่ใจหรือไม่ว่าต้องการปิดการใช้งานสินค้ารายการนี้?")) return;
+    if (!confirm("คุณแน่ใจหรือไม่ว่าต้องการลบสินค้ารายการนี้ออกจากระบบ?")) return;
     try {
       const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+      const data = await res.json().catch(() => ({}));
       if (res.ok) {
         fetchProducts();
+      } else {
+        alert(data.error || "เกิดข้อผิดพลาดในการลบสินค้า");
       }
     } catch (e) {
       console.error(e);
+      alert("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์");
     }
   };
 
