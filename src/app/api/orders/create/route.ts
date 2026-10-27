@@ -78,10 +78,40 @@ export async function POST(req: NextRequest) {
       product.weeklyRate
     );
 
-    // 3. GENERATE UNIQUE ORDER NUMBER
-    const datePrefix = new Date().toISOString().slice(0, 7).replace("-", "");
-    const count = await prisma.rentalOrder.count();
-    const orderNumber = `TR-${datePrefix}-${String(count + 1).padStart(4, "0")}`;
+    // 3. GENERATE ROBUST UNIQUE ORDER NUMBER (Auto-increment & Collision Free)
+    const now = new Date();
+    const datePrefix = now.toISOString().slice(0, 7).replace("-", ""); // e.g. "202610"
+
+    // Find the latest order with the current prefix
+    const latestOrder = await prisma.rentalOrder.findFirst({
+      where: {
+        orderNumber: {
+          startsWith: `TR-${datePrefix}-`,
+        },
+      },
+      orderBy: {
+        orderNumber: "desc",
+      },
+      select: {
+        orderNumber: true,
+      },
+    });
+
+    let nextSeq = 1;
+    if (latestOrder?.orderNumber) {
+      const parts = latestOrder.orderNumber.split("-");
+      const lastNum = parseInt(parts[parts.length - 1], 10);
+      if (!isNaN(lastNum)) {
+        nextSeq = lastNum + 1;
+      }
+    }
+
+    // Verify uniqueness or increment until completely free
+    let orderNumber = `TR-${datePrefix}-${String(nextSeq).padStart(4, "0")}`;
+    while (await prisma.rentalOrder.findUnique({ where: { orderNumber } })) {
+      nextSeq++;
+      orderNumber = `TR-${datePrefix}-${String(nextSeq).padStart(4, "0")}`;
+    }
 
     const isMockInstantPay = paymentMethod === "MOCK_GATEWAY";
 
