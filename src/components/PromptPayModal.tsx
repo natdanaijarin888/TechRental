@@ -24,6 +24,7 @@ export default function PromptPayModal({
   const [slipImage, setSlipImage] = useState<string>("");
   const [slipFileName, setSlipFileName] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [refNumber] = useState(`REF-${Date.now().toString().slice(-8)}`);
 
   const promptpayAccount = "081-234-5678";
@@ -52,16 +53,40 @@ export default function PromptPayModal({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setSlipFileName(file.name);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSlipImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    setSlipFileName(file.name);
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.url) {
+          setSlipImage(data.url);
+          setUploading(false);
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn("Upload API failed, fallback to base64", err);
     }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSlipImage(reader.result as string);
+      setUploading(false);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmitSlip = () => {
@@ -181,11 +206,11 @@ export default function PromptPayModal({
           <button
             type="button"
             onClick={handleSubmitSlip}
-            disabled={!slipImage || isSubmitting}
+            disabled={!slipImage || isSubmitting || uploading}
             className="w-full py-3 px-4 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-blue-500/20 transition flex items-center justify-center gap-2"
           >
             <CheckCircle2 className="w-4 h-4" />
-            {isSubmitting ? "กำลังส่งหลักฐาน..." : "ยืนยันและส่งสลิปโอนเงิน"}
+            {isSubmitting ? "กำลังส่งหลักฐาน..." : uploading ? "กำลังอัปโหลดสลิป..." : "ยืนยันและส่งสลิปโอนเงิน"}
           </button>
 
           {/* Quick Mock Gateway button for instant testing! */}
