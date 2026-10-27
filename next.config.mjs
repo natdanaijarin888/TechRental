@@ -10,6 +10,15 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/admin/notifications',
+        destination: '/admin/dashboard',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

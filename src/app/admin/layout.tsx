@@ -10,7 +10,6 @@ import {
   Layers,
   ClipboardCheck,
   History,
-  BellRing,
   ArrowLeft,
   ShieldCheck,
   UserCheck,
@@ -57,11 +56,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       href: "/admin/audit-logs",
       label: "ประวัติการทำงาน (Audit Log)",
       icon: History,
-    },
-    {
-      href: "/admin/notifications",
-      label: "จำลองส่งแจ้งเตือน (LINE/Email)",
-      icon: BellRing,
     },
   ];
 
