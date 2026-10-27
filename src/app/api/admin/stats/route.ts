@@ -59,11 +59,12 @@ export async function GET(req: NextRequest) {
       prisma.assetItem.count({ where: { status: "DAMAGED" } }),
     ]);
 
-    // 4. Orders due soon (Active orders with endDate <= 2 days from now)
+    // 4. Orders due soon (Active orders with endDate between today and 2 days from now)
     const dueSoonOrders = await prisma.rentalOrder.findMany({
       where: {
         status: "ACTIVE",
         endDate: {
+          gte: today,
           lte: twoDaysLater,
         },
       },
@@ -88,6 +89,7 @@ export async function GET(req: NextRequest) {
         product: { select: { name: true } },
         assignedAsset: { select: { serialNumber: true } },
       },
+      orderBy: { endDate: "asc" },
     });
 
     // 6. Most rented products
